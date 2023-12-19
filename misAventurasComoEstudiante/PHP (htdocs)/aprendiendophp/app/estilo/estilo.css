@@ -1,0 +1,152 @@
+html,body{background:rgb(80, 80, 80);color:white;width:100%;height: 100%;padding: 0px; margin: 0px; }
+main{height: 100%;}
+header{height: 400px;}
+header h1{right:20px}
+header img{scale: 100%}
+/* //////////////////////////ESTILO DEL PASAFOTOS/////////////////////////////////// /*/
+section article{
+    width: 200px;
+    height: 200px;
+    float:left;
+    border: 0px solid white;
+    position: relative;
+    margin:5px;
+    transform:scale(1, 1);
+    z-index:1;
+    transition:all 1s;
+}
+section article img{
+    width: 100%;
+    position:absolute;
+    top:0px;
+    left:0px;
+}
+section article h3,section article h4,section article p{
+    position:absolute;
+}
+.aumentado{
+    transform:scale(1.3, 1.3);
+    border: 0px solid white;
+    box-shadow:0px 0px 15px 0px black;
+    z-index: 1000;
+}
+section{
+    padding-top: 50px;
+    width:100%;
+    height: 300px;
+    overflow: hidden;
+}
+section .ribbon{
+    width:4000px;
+    position:relative;
+    left:0px;
+    transition:all 1s;
+
+}
+.botonredondo{
+    width:30px;
+    height:30px;
+    border-radius:30px;
+    background-color: rgb(220,220,220);
+    color:black;
+
+    text-align: center;
+    line-height: 30px;
+    font-weight: bold;
+    position: absolute;
+}
+.botones{
+    width: 100%;
+    position:absolute;
+    z-index: 10000;
+    
+}
+.anterior{
+    top:100px;
+    transform: rotate(180deg);
+}
+.posterior{
+    right: 20px;
+    top:100px;
+}
+/* //////////////////////////ESTILO DEL PASAFOTOS/////////////////////////////////// /*/
+/* //////////////////////////ESTILO DEL ARTICULO/////////////////////////////////// /*/
+
+article h3, article h4, article p {
+    display:none;
+}
+
+/* //////////////////////////ESTILO DEL ARTICULO/////////////////////////////////// /*/
+/* //////////////////////////ESTILO DEL DESTACADO/////////////////////////////////// /*/
+
+#destacado{
+    position:absolute;
+    width: 80%;
+    right: 0px;
+    height: 100%;
+    top:0px;
+    height: 400px;
+    overflow: hidden;
+    box-shadow: 0px 0px 20px 20px black inset;
+    
+}
+#destacado img{
+    width: 100%;
+    opacity:0.5;
+    
+}
+#destacado h2, #destacado h3, #destacado p{
+    position:absolute;
+    top:0px;    
+}
+/* //////////////////////////ESTILO DEL DESTACADO/////////////////////////////////// /*/
+
+/* //////////////////////////ESTILO DE LOS DETALLES/////////////////////////////////// /*/
+
+.detalles{
+    width: 100%;
+    height:0px;
+    background: rgb(40,40,40);
+    box-shadow: 0px 0px 30px 0px black inset;
+    overflow: hidden;
+    transition: all 1s;
+    position: relative;
+}
+.abierto{
+    height: 400px;
+}
+.muyabierto{
+    height: 800px;
+}
+.detalles h2,.detalles h3, .detalles p, .detalles button{
+    position: absolute;
+}
+.detalles h2{
+    top:20px;
+    left:20px;
+}
+.detalles h3{
+    top:50px;
+    left:20px;
+}
+.detalles p{
+    top: 80px;
+    left:20px;
+}
+.detalles .infocurso{
+    position: absolute;
+    top: 120px;
+    left:20px;
+}
+.detalles img{width: 100%;opacity: 0.5;}
+.detalles button{
+    bottom:20px;
+    left:20px;
+    background:    rgb(240,123,43);
+    border-radius: 11px;
+    padding:       20px 35px;
+    color:         #ffffff;
+    display:       inline-block;
+    font:          normal bold 23px/1 "Open Sans", sans-serif;
+    text-align:    center;
+}

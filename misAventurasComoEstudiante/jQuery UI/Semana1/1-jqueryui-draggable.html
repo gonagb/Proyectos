@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery-ui.min.css"></script>
+    <script src="js/jquery-ui.structure.min.css"></script>
+    <script src="js/jquery-ui.theme.min.css"></script>
+
+    <style>
+        #mueveme{
+            width: 200px;
+            height: 200px;
+            background: #ffa600;
+        }
+        #mueveme2{
+            width: 200px;
+            height: 200px;
+            background: #339cff;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){   
+          $(".semueve").draggable({opacity:0.5})
+          
+        })
+    </script>
+
+</head>
+<body>
+    <div id="mueveme" class="semueve"></div>
+    <div id="mueveme2" class="semueve"></div>
+</body>
+</html>

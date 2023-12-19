@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="js/jquery-ui.min.css">
+    <link rel="stylesheet" href="js/jquery-ui.structure.min.css">
+    <link rel="stylesheet" href="js/jquery-ui.theme.min.css">
+
+    <style>
+        #redimensioname{
+            width: 500px;
+            height: 500px;
+            border: 3px solid #ff8818;
+            padding: 10px;
+            outline: none;
+            font-family: sans-serif;
+        }
+        
+    </style>
+
+    <script>
+        $(document).ready(function(){
+          $("#redimensioname").resizable()
+          $("#redimensioname").draggable()
+          
+        })
+    </script>
+
+</head>
+<body>
+    <div id="redimensioname" contenteditable="true">Hola</div>
+</body>
+</html>

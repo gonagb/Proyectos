@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio 3 de Desarrollo de Interfaces</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Tabler Icons-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+
+    <!-- Google CDN de jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Google CDN de jQuery UI (CSS y JS) con tema Smoothness -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+    <!-- Select2 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- jQuery Scripts -->
+    <script src="jquery.connections.js"></script>
+
+    <script>
+      var ejecucion = new Array();
+      $(document).ready(function() {
+        for(var i = 0; i < localStorage.length; i++){
+          clave = localStorage.key(i)
+          valor = localStorage.getItem(localStorage.key(i));
+          $(".nodo[id='"+clave+"']").css("left",valor.split(",")[0])
+          $(".nodo[id='"+clave+"']").css("top",valor.split(",")[1])
+
+        }
+          $("#tabs").tabs();
+          $("#biblioteca").accordion();
+          $("#parametros").accordion();
+          $("#menu").menu();
+          $(".nodo").draggable({
+            start: function() {
+                // Código a ejecutar al iniciar el arrastre
+            },
+            drag: function() {
+                // Eliminar todas las conexiones existentes
+                $(".connection").remove();
+
+                // Crear nuevas conexiones
+                $(".nodo").each(function() {
+                    if ($(this).attr("exectarget") !== '') {
+                        $(this).connections({ to: ".nodo[id='" + $(this).attr("exectarget") + "']" });
+                    }
+                });
+            },
+            stop: function() {
+                // Código a ejecutar al soltar el elemento
+            }
+        });
+          $("#dialog").dialog('close');
+          $("#espacio").contextmenu(function(event) {
+            event.preventDefault();
+            console.log("menu contextual");
+          });
+          $(".select2").select2();
+          $("button").button();
+          // Play Function
+          $("#play").click(function() {
+            contador = 0;
+            ejecucion = [];
+            ejecucion[0] = $("#beginPlay").attr("id");
+            destino = $("#beginPlay").attr("exectarget");
+            nodoactual = $("#beginPlay");
+            while (nodoactual.attr("id") !== 'undefined') {
+              destino = $(".nodo[id='" + nodoactual.attr("exectarget") + "']");
+              nodoactual = $(".nodo[id='" + $(this).attr("exectarget") + "']");
+              ejecucion.push(nodoactual.attr("id"));
+              contador++;
+              console.log("exectarget es " + nodoactual.attr("exectarget"));
+              if (contador > 100 || typeof(nodoactual.attr("exectarget")) === 'undefined') {
+                break;
+              }
+            }
+            console.log(ejecucion);
+          });
+          // Save Function
+          $("#save").click(function(){
+            $(".nodo").each(function(){
+              localStorage.setItem($(this).attr("id"), $(this).css("left")+","+$(this).css("top"));
+            })
+          })
+      });
+    </script>
+</head>
+<body>
+    <div id="App">
+        <table>
+            <tr>
+                <td>
+                    <ul id="menu">
+                        <li class="ui-state-enabled">
+                            <div>Menu</div>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button id="play"><i class="ti ti-player-play-filled" style="width: 20px;"></i></button>
+                    <button id="save"><i class="ti ti-device-floppy" style="width: 20px;"></i></button>
+
+                </td>
+            </tr>
+            <tr>
+                <td class="aside">
+                    <div id="biblioteca">
+                        <h3>Section 1</h3>
+                        <div>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                        <h3>Section 2</h3>
+                        <div>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                        <h3>Section 3</h3>
+                        <div>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                            <ul>
+                                <li>List item one</li>
+                                <li>List item two</li>
+                                <li>List item three</li>
+                            </ul>
+                        </div>
+                        <h3>Section 4</h3>
+                        <div>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                            <p>
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div id="tabs">
+                        <ul>
+                            <li><a href="#tabs-1">Nodo 1</a></li>
+                            <li><a href="#tabs-2">Nodo 2</a></li>
+                            <li><a href="#tabs-3">Nodo 3</a></li>
+                        </ul>
+                        <div id="tabs-1">
+                            <div id="espacio">
+                                <div id="beginPlay" class="nodo" title="Nodo" exectarget="nodo1">
+                                    <p>beginPlay</p>
+                                    <div class="entradas">
+                                        <div class="ejecucion"><span class="conector"></span>Exec</div>
+                                        <div class="parametro"><span class="conector"></span>param1</div>
+                                        <div class="parametro"><span class="conector"></span>param2</div>
+                                    </div>
+                                    <div class="salidas">
+                                        <div class="ejecucion">Exec<span class="conector" id="inicio"></span></div>
+                                        <div class="parametros">param1<span class="conector"></span></div>
+                                        <div class="parametro">param2<span class="conector"></span></div>
+                                    </div>
+                                </div>
+                                <div id="nodo1" class="nodo" title="Nodo" exectarget="nodo2">
+                                    <p>Nombre del nodo</p>
+                                    <div class="entradas">
+                                        <div class="ejecucion"><span class="conector" id="final"></span>Exec</div>
+                                        <div class="parametro"><span class="conector"></span>param1</div>
+                                        <div class="parametro"><span class="conector"></span>param2</div>
+                                    </div>
+                                    <div class="salidas">
+                                        <div class="ejecucion">Exec<span class="conector"></span></div>
+                                        <div class="parametros">param1<span class="conector"></span></div>
+                                        <div class="parametro">param2<span class="conector"></span></div>
+                                    </div>
+                                  </div>
+                                  <div id="nodo2" class="nodo" title="Nodo" exectarget="nodo3">
+                                      <p>Nombre del nodo</p>
+                                      <div class="entradas">
+                                          <div class="ejecucion"><span class="conector"></span>Exec</div>
+                                          <div class="parametro"><span class="conector"></span>param1</div>
+                                          <div class="parametro"><span class="conector"></span>param2</div>
+                                      </div>
+                                      <div class="salidas">
+                                          <div class="ejecucion">Exec<span class="conector"></span></div>
+                                          <div class="parametros">param1<span class="conector"></span></div>
+                                          <div class="parametro">param2<span class="conector"></span></div>
+                                      </div>
+                                  </div>
+                                  <div id="nodo3" class="nodo" title="Nodo" exectarget="nodo4">
+                                      <p>Nombre del nodo</p>
+                                      <div class="entradas">
+                                          <div class="ejecucion"><span class="conector"></span>Exec</div>
+                                          <div class="parametro"><span class="conector"></span>param1</div>
+                                          <div class="parametro"><span class="conector"></span>param2</div>
+                                      </div>
+                                      <div class="salidas">
+                                          <div class="ejecucion">Exec<span class="conector"></span></div>
+                                          <div class="parametros">param1<span class="conector"></span></div>
+                                          <div class="parametro">param2<span class="conector"></span></div>
+                                      </div>
+                                  </div>
+                                  <div id="nodo4" class="nodo" title="Nodo" exectarget="nodo5">
+                                      <p>Nombre del nodo</p>
+                                      <div class="entradas">
+                                          <div class="ejecucion"><span class="conector"></span>Exec</div>
+                                          <div class="parametro"><span class="conector"></span>param1</div>
+                                          <div class="parametro"><span class="conector"></span>param2</div>
+                                      </div>
+                                      <div class="salidas">
+                                          <div class="ejecucion">Exec<span class="conector"></span></div>
+                                          <div class="parametros">param1<span class="conector"></span></div>
+                                          <div class="parametro">param2<span class="conector"></span></div>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div id="tabs-2">
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, dicta suscipit. Eaque tenetur, adipisci perspiciatis, suscipit ipsa enim sed incidunt natus eius accusamus earum omnis culpa eos! Deleniti, cumque fugit?
+                              </p>
+                          </div>
+                          <div id="tabs-3">
+                              <p>
+                                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio rem consequatur tenetur necessitatibus praesentium laboriosam repellat at corrupti sed libero nobis quas amet facilis, corporis excepturi eaque soluta reiciendis tempore?
+                              </p>
+                          </div>
+                      </div>
+                  </td>
+                  <td class="aside">
+                      <div id="parametros">
+                          <h3>Section 1</h3>
+                          <div>
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam voluptates at id earum magni rerum similique inventore soluta molestias! In labore reprehenderit exercitationem nam nemo iusto debitis magnam libero placeat!
+                              </p>
+                          </div>
+                          <h3>Section 2</h3>
+                          <div>
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              </p>
+                          </div>
+                          <h3>Section 3</h3>
+                          <div>
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              </p>
+                              <ul>
+                                  <li>List item one</li>
+                                  <li>List item two</li>
+                                  <li>List item three</li>
+                              </ul>
+                          </div>
+                          <h3>Section 4</h3>
+                          <div>
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              </p>
+                              <p>
+                                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                              </p>
+                          </div>
+                      </div>
+                  </td>
+              </tr>
+          </table>
+      </div>
+  </body>
+  </html>
+  

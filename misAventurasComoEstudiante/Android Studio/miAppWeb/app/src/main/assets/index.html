@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="jquery-3.6.4.min.js"></script>
+        <style>
+            h1{color:blue;}
+            h2{color:skyblue;}
+            p, input, button{width: 100%; color:green;}
+
+
+        </style>
+    </head>
+
+    <body>
+        <h1 id="titulo"> App de Goncho </h1>
+        <p>Introduce el operando número 1</p>
+        <input type="text" id="operando1">
+        <p>Introduce el operando número 2</p>
+        <input type="text" id="operando2">
+        <button id="calcula">Calcula</button>
+        <p>Resultado: </p>
+        <input type="text" id="resultado">
+        <script>
+            $(document).ready(function({
+                $("#calcula").click(function(){
+                var op1= $("#operando1").val()*1
+                var op2= $("#operando2").val()*1
+                var resultado = op1+op2
+                $("#resultado").val(resultado)
+
+            })
+                
+            }))
+        </script>
+        
+    </body>
+
+</html>

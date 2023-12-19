@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Estilos CSS-->
+<link id="mainstyle" rel="stylesheet" href="CSS Types/mainstyle.css">
+<!-- Estilos CSS-->
+
+<!-- JQuery CDN-->
+ <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+<!-- JQuery CDN--> 
+ 
+<!-- Libreria FullCalendar-->
+<script src='fullcalendar/dist/index.global.js'></script>
+<!-- Libreria FullCalendar-->
+
+<!-- JS FullCalendar-->
+<!-- <script src='JS/fullcalendar.js'></script> -->
+<!-- JS FullCalendar-->
+
+<script> document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendario');
+
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth timeGridWeek timeGridDay listMonth'
+    },
+    initialDate: '2023-01-01',
+    navLinks: true, // can click day/week names to navigate views
+    businessHours: true, // display business hours
+    editable: true,
+    selectable: true,
+    events: // <?php include "eventos.php" ?>
+    [
+      {
+        title: 'Business Lunch',
+        start: '2023-09-03T13:00:00',
+        constraint: 'businessHours'
+      },
+      {
+        title: 'Meeting',
+        start: '2023-09-13T11:00:00',
+        constraint: 'availableForMeeting', // defined below
+        color: '#257e4a'
+      },
+      {
+        title: 'Conference',
+        start: '2023-09-18',
+        end: '2020-09-20'
+      },
+      {
+        title: 'Party',
+        start: '2023-09-29T20:00:00'
+      },
+
+      // areas where "Meeting" must be dropped
+      {
+        groupId: 'availableForMeeting',
+        start: '2020-09-11T10:00:00',
+        end: '2020-09-11T16:00:00',
+        display: 'background'
+      },
+      {
+        groupId: 'availableForMeeting',
+        start: '2020-09-13T10:00:00',
+        end: '2020-09-13T16:00:00',
+        display: 'background'
+      },
+
+      // red areas where no events can be dropped
+      {
+        start: '2020-09-24',
+        end: '2020-09-28',
+        overlap: false,
+        display: 'background',
+        color: '#ff9f89'
+      },
+      {
+        start: '2020-09-06',
+        end: '2020-09-08',
+        overlap: false,
+        display: 'background',
+        color: '#ff9f89'
+      }
+    ]
+  });
+
+  /*  Formulario Eventos
+
+  var form = document.getElementById("createEventForm");
+  form.addEventListener("submit", function(event) {
+  event.preventDefault();
+  var title = form.eventTitle.value;
+  var start = form.startDate.value;
+  var end = form.endDate.value;
+  var color = form.color.value;
+  
+  // enviar la información al servidor para crear el evento */
+
+
+  calendar.render();
+});   </script>
+
+</head>
+<body>
+  <div id='wrap'>
+
+    <div id='external-events'>
+      <h4>Eventos Comunes</h4>
+
+      <div id='external-events-list'>
+        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+          <div class='fc-event-main'>My Event 1</div>
+        </div>
+        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+          <div class='fc-event-main'>My Event 2</div>
+        </div>
+        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+          <div class='fc-event-main'>My Event 3</div>
+        </div>
+        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+          <div class='fc-event-main'>My Event 4</div>
+        </div>
+        <div class='fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event'>
+          <div class='fc-event-main'>My Event 5</div>
+        </div>
+      </div>
+
+      <p>
+        <input type='checkbox' id='drop-remove' />
+        <label for='drop-remove'>remove after drop</label>
+      </p>
+    </div>
+  <div id='calendario'></div>
+
+  <form id="crearEventos">
+    <label for="eventTitle">Título del evento:</label>
+    <input type="text" id="eventTitle" name="eventTitle"><br>
+    
+    <label for="startDate">Fecha de inicio:</label>
+    <input type="datetime-local" id="startDate" name="startDate"><br>
+    
+    <label for="endDate">Fecha de finalización:</label>
+    <input type="datetime-local" id="endDate" name="endDate"><br>
+
+    <label for="Color">Color:</label>
+    <input type="color" id="color name="Color"><br>
+    
+    <input type="submit" value="Crear evento">
+</form>
+
+</body>
+</html>

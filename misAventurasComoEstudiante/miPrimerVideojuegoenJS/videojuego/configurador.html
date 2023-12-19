@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador de PJ - Mi primer Videojuego</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <style>
+        body {
+            background: rgb(220, 220, 220);
+            font-family: sans-serif;
+            text-align: center;
+        }
+        #lienzo {
+            width: 500px;
+            height: 500px;
+            margin-left: 20px; 
+            border-radius: 5px;
+        }
+        #contenedor {
+            width: 512px;
+            height: 256px;
+            margin: auto;
+        }
+        #contienelienzos {
+            width: 256px;
+            height: 256px;
+            float: right;
+        }
+        #contieneparametros {
+            width: 256px;
+            height: 256px;
+            float: left;
+            text-align: right;
+        }
+        h2 {
+            margin: 0px;
+            padding: 0px;
+            font-size: 14px;
+            display: inline;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        #oculto {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <main>
+    <h1>Personaliza tu personaje</h1>
+    <div id="contenedor">
+         <!-- Canvas para el personaje -->
+         <div id="contienelienzos">
+            <canvas id="lienzo"></canvas>
+        </div>
+         <!-- Parámetros para personalizar el personaje -->
+        <div id="contieneparametros">
+            <h2>Color del pelo:</h2>
+            <input type="color" id="colorpelo" class="color" value="#633a34"><br><br>
+            <h2>Color de la piel:</h2>
+            <input type="color" id="colorpiel" class="color" value="#fdddca"><br><br>
+            <h2>Color de la camiseta:</h2>
+            <input type="color" id="colorcamiseta" class="color" value="#ffa500"><br><br>
+            <h2>Color de los pantalones:</h2>
+            <input type="color" id="colorpantalones" class="color" value="#5dadec"><br><br>
+            <h2>Color de las zapatillas:</h2>
+            <input type="color" id="colorzapatillas" class="color" value="#cccccc"><br><br>
+        </div>
+    </div>
+
+   <div id="oculto">
+    <!-- Canvas de los diferentes elementos del personaje -->
+        <canvas id="imagenpelo" width="2048" height="2048"></canvas>
+        <canvas id="colorpelosolido" width="2048" height="2048"></canvas>
+        <canvas id="fusionpelo" width="2048" height="2048"></canvas>
+        <canvas id="imagenpiel" width="2048" height="2048"></canvas>
+        <canvas id="colorpielsolido" width="2048" height="2048"></canvas>
+        <canvas id="fusionpiel" width="2048" height="2048"></canvas>
+        <canvas id="imagencamiseta" width="2048" height="2048"></canvas>
+        <canvas id="colorcamisetasolido" width="2048" height="2048"></canvas>
+        <canvas id="fusioncamiseta" width="2048" height="2048"></canvas>
+        <canvas id="imagenpantalones" width="2048" height="2048"></canvas>
+        <canvas id="colorpantalonessolido" width="2048" height="2048"></canvas>
+        <canvas id="fusionpantalones" width="2048" height="2048"></canvas>
+        <canvas id="imagenzapatilla" width="2048" height="2048"></canvas>
+        <canvas id="colorzapatillasolido" width="2048" height="2048"></canvas>
+        <canvas id="fusionzapatilla" width="2048" height="2048"></canvas>
+        
+        <canvas id="fusiondetodo" width="2048" height="2048"></canvas>
+    </div>
+    </main>
+     <!-- jQuery -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    <script>
+
+    // Variables de personalización
+        var temporizador;
+        var spritex = 0;
+        var spritey = 0;
+        var contexto = document.getElementById("lienzo").getContext("2d");
+        // Pelo
+        var ctxpeloimg = document.getElementById("imagenpelo").getContext("2d");
+        var ctxpelocolor = document.getElementById("colorpelosolido").getContext("2d");
+        var ctxpelofusion = document.getElementById("fusionpelo").getContext("2d");
+        // Piel
+        var ctxpielimg = document.getElementById("imagenpiel").getContext("2d");
+        var ctxpielcolor = document.getElementById("colorpielsolido").getContext("2d");
+        var ctxpielfusion = document.getElementById("fusionpiel").getContext("2d");
+        // Camiseta
+        var ctxcamisetaimg = document.getElementById("imagencamiseta").getContext("2d");
+        var ctxcamisetacolor = document.getElementById("colorcamisetasolido").getContext("2d");
+        var ctxcamisetafusion = document.getElementById("fusioncamiseta").getContext("2d");
+        // Pantalones
+        var ctxpantalonesimg = document.getElementById("imagenpantalones").getContext("2d");
+        var ctxpantalonescolor = document.getElementById("colorpantalonessolido").getContext("2d");
+        var ctxpantalonesfusion = document.getElementById("fusionpantalones").getContext("2d");
+        // Zapatillas
+        var ctxzapatillasimg = document.getElementById("imagenzapatilla").getContext("2d");
+        var ctxzapatillascolor = document.getElementById("colorzapatillasolido").getContext("2d");
+        var ctxzapatillasfusion = document.getElementById("fusionzapatilla").getContext("2d");
+    
+    // Fusionamos todo el contexto    
+        var ctxfusiondetodo = document.getElementById("fusiondetodo").getContext("2d");
+
+    // Imágenes de los componentes del personaje
+        var pelo = new Image();pelo.src = "img/componentespersonaje/pelo.png";
+        var pantalones = new Image();pantalones.src = "img/componentespersonaje/pantalones.png";
+        var camiseta = new Image();camiseta.src = "img/componentespersonaje/camiseta.png";
+        var piel = new Image();piel.src = "img/componentespersonaje/piel.png";
+        var cara = new Image();cara.src = "img/componentespersonaje/cara.png";
+        var pies = new Image();pies.src = "img/componentespersonaje/pies.png";
+        var sombra = new Image();sombra.src = "img/componentespersonaje/sombra.png";
+        var imagenfinal = new Image();
+
+        inicio();
+
+    // Función de Inicio    
+        function inicio() {
+            temporizador = setTimeout("bucle()", 1000);
+            $(".color").change(function() {
+
+            // Lógica para personalizar el personaje
+
+                // Pelo
+                ctxpeloimg.drawImage(pelo, 0, 0);
+                ctxpelocolor.fillStyle = $("#colorpelo").val();
+                ctxpelocolor.fillRect(0, 0, 2048, 2048);
+                var pximgpelo = ctxpeloimg.getImageData(0, 0, 2048, 2048);
+                var pximgcolor = ctxpelocolor.getImageData(0, 0, 2048, 2048);
+                for (var i = 0; i < pximgpelo.data.length; i++) {
+                    pximgpelo.data[i] = (pximgpelo.data[i] * pximgcolor.data[i]) / 255;
+                }
+                
+                ctxpelofusion.putImageData(pximgpelo, 0, 0);
+                
+                // Piel
+                ctxpielimg.drawImage(piel, 0, 0);
+                ctxpielcolor.fillStyle = $("#colorpiel").val();
+                ctxpielcolor.fillRect(0, 0, 2048, 2048);
+                var pximgpiel = ctxpielimg.getImageData(0, 0, 2048, 2048);
+                var pximgcolor = ctxpielcolor.getImageData(0, 0, 2048, 2048);
+                for (var i = 0; i < pximgpiel.data.length; i++) {
+                    pximgpiel.data[i] = (pximgpiel.data[i] * pximgcolor.data[i]) / 255;
+                }
+                
+                ctxpielfusion.putImageData(pximgpiel, 0, 0);
+
+                // Camiseta
+                ctxcamisetaimg.drawImage(camiseta, 0, 0);
+                ctxcamisetacolor.fillStyle = $("#colorcamiseta").val();
+                ctxcamisetacolor.fillRect(0, 0, 2048, 2048);
+                var pximgcamiseta = ctxcamisetaimg.getImageData(0, 0, 2048, 2048);
+                var pximgcolor = ctxcamisetacolor.getImageData(0, 0, 2048, 2048);
+                for (var i = 0; i < pximgcamiseta.data.length; i++) {
+                    pximgcamiseta.data[i] = (pximgcamiseta.data[i] * pximgcolor.data[i]) / 255;
+                }
+                
+                ctxcamisetafusion.putImageData(pximgcamiseta, 0, 0);
+                
+                // Pantalones
+                ctxpantalonesimg.drawImage(pantalones, 0, 0);
+                ctxpantalonescolor.fillStyle = $("#colorpantalones").val();
+                ctxpantalonescolor.fillRect(0, 0, 2048, 2048);
+                var pximgpantalones = ctxpantalonesimg.getImageData(0, 0, 2048, 2048);
+                var pximgcolor = ctxpantalonescolor.getImageData(0, 0, 2048, 2048);
+                for (var i = 0; i < pximgpantalones.data.length; i++) {
+                    pximgpantalones.data[i] = (pximgpantalones.data[i] * pximgcolor.data[i]) / 255;
+                }
+                
+                ctxpantalonesfusion.putImageData(pximgpantalones, 0, 0);
+                
+                // Zapatillas
+                ctxzapatillasimg.drawImage(pies, 0, 0);
+                ctxzapatillascolor.fillStyle = $("#colorzapatillas").val();
+                ctxzapatillascolor.fillRect(0, 0, 2048, 2048);
+                var pximgzapatilla = ctxzapatillasimg.getImageData(0, 0, 2048, 2048);
+                var pximgcolor = ctxzapatillascolor.getImageData(0, 0, 2048, 2048);
+                for (var i = 0; i < pximgzapatilla.data.length; i++) {
+                    pximgzapatilla.data[i] = (pximgzapatilla.data[i] * pximgcolor.data[i]) / 255;
+                }
+                ctxzapatillasfusion.putImageData(pximgzapatilla, 0, 0);
+
+            // Obtenemos los datos de píxeles de las imágenes fusionadas de cada componente del personaje
+                var pixelespelo = ctxpelofusion.getImageData(0, 0, 2048, 2048);
+                var pixelespiel = ctxpielfusion.getImageData(0, 0, 2048, 2048);
+                var pixelescamiseta = ctxcamisetafusion.getImageData(0, 0, 2048, 2048);
+                var pixelespantalones = ctxpantalonesfusion.getImageData(0, 0, 2048, 2048);
+                var pixeleszapatillas = ctxzapatillasfusion.getImageData(0, 0, 2048, 2048);
+
+                // Combinamos los datos de píxeles de los diferentes componentes sumando sus valores
+                for (var i = 0; i < pixelespelo.data.length; i++) {
+                    pixelespelo.data[i] = pixelespelo.data[i] + pixelespiel.data[i] + pixelescamiseta.data[i] + pixelespantalones.data[i] + pixeleszapatillas.data[i];
+                }
+
+                // Colocamos los datos de píxeles fusionados en el lienzo de fusion
+                ctxfusiondetodo.putImageData(pixelespelo, 0, 0);
+                // Agregamos la imagen de la cara al lienzo de fusion
+                ctxfusiondetodo.drawImage(cara, 0, 0);
+                // Agregamos la imagen de la sombra al lienzo de fusion
+                ctxfusiondetodo.drawImage(sombra, 0, 0);
+                // Convertimos el lienzo de fusion en una imagen y actualizamos la fuente de la imagen final
+                imagenfinal.src = document.getElementById("fusiondetodo").toDataURL();
+
+            });
+
+        }
+    // Función de Bucle para los Sprites 
+      
+    function bucle(){
+                spritex++;
+                if(spritex > 7){
+                    spritey++;
+                    spritex = 0;
+                }
+                if(spritey > 7){
+                    spritey = 0;
+                }
+                contexto.clearRect(0,0,256,256)
+                
+                contexto.drawImage(imagenfinal,
+                spritex*256, 
+                spritey*256, 
+                256,256,
+                0,0,
+                256, 128);
+                
+                
+                clearTimeout(temporizador)
+                temporizador = setTimeout("bucle()",100)
+            }
+            
+    </script>
+</body>
+</html>

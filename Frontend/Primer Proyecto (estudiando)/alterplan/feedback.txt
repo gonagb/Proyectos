@@ -1,0 +1,15 @@
+Este documento está creado para organizar el proyecto y gestionar el feedback a traves de aquí
+
+El planteamiento de la aplicación es sencillo. Un Planificador Web (parecido a Google Calendar),
+pero los colores utilizados para la agenda son aptos para daltónicos, en función del tipo de daltonísmo que tengan.
+
+En principio, la gestión de la base de datos sería la siguiente (todavía no se si en SQLite o en MySQL, pero teniendo en cuenta que será con PHP, seguramente será MySQL)
+    1. Id, Usuario, Contraseña.
+    1b. Usuario. nombre, apellido, email, telefono
+    2. Eventos. Id, 
+    3. Calendario. Id,
+    4. visionproblem. Id, nombre, css asociado, 
+    
+        4b. Deuteranopía: Alteración de la visión al color rojo. Puede ser total o parcial. 
+            Protanopía: Alteración de la visión al color verde. Puede ser total o parcial.
+            Tritanopía: Alteración de la visión al color azul. Puede ser total o parcial.
