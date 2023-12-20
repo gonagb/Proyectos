@@ -3,7 +3,7 @@ import os
 
 class Chatbot:
     def __init__(self):
-        openai.api_key = os.environ.get("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")
+        openai.api_key = os.environ.get("")
 
     def get_response(self, input):
         prompt = f"Me: {input}\nBot:"

@@ -3,7 +3,7 @@ import sys
 import openai
 
 #print(sys.argv)
-openai.api_key = "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"
+openai.api_key = ""
 prompt = sys.argv[1]
 response = openai.Completion.create(
 
