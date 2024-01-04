@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección del movimiento</title>
+    <style>
+        /* Estilos CSS */
+        html,body{background:rgb(20,20,20);}
+        video{display:none;} /* El video está oculto visualmente */
+        canvas{position:absolute;top:0px;left:0px;} /* Los lienzos están superpuestos */
+        #lienzo2{opacity:0.5;} /* Reducción de opacidad para el segundo lienzo */
+    </style>
+</head>
+<body>
+    <!-- Elementos HTML -->
+    <canvas id="lienzo" width="640px" height="480px"></canvas>
+    <canvas id="lienzo2" width="640px" height="480px"></canvas>
+    <video id="video" autoplay></video>
+    <script>
+        // JavaScript para la detección de movimiento
+        // Obteniendo elementos del DOM
+        const video = document.getElementById("video");
+        const lienzo = document.getElementById("lienzo");
+        const lienzo2 = document.getElementById("lienzo2");
+        const contexto = lienzo.getContext("2d");
+        const contexto2 = lienzo2.getContext("2d");
+
+        // Estableciendo un color semitransparente para el segundo lienzo
+        contexto2.fillStyle = "rgba(255,255,255,0.5)";
+
+        // Tamaño de los píxeles a considerar para la detección
+        const paso = 16;
+
+        // Arreglos para almacenar los píxeles antiguos y nuevos
+        var pixelesviejos = [];
+        var pixelesnuevos = [];
+        var contador = 0;
+
+        // Accediendo a la cámara web del usuario
+        navigator.mediaDevices.getUserMedia({video:true})
+            .then(function(flujo){
+                video.srcObject = flujo;
+            })
+            .catch(function(error){
+                console.log("error: "+error)
+            })
+
+        // Función para procesar el video en el lienzo
+        function videoALienzo(){
+            // Limpia y rellena el segundo lienzo con un color semitransparente
+            contexto2.fillRect(0,0,640,480);
+
+            // Dibuja el video en el primer lienzo
+            contexto.drawImage(video,0,0,lienzo.width,lienzo.height);
+
+            // Actualiza los píxeles antiguos y nuevos
+            pixelesviejos = pixelesnuevos;
+            pixelesnuevos = [];
+
+            // Analiza los píxeles en el lienzo
+            for(let x = 0; x < 640; x += paso){
+                for(let y = 0; y < 480; y += paso){
+                    let pixel = contexto.getImageData(x, y, 1, 1);
+                    pixelesnuevos.push({
+                        data: pixel.data,
+                        x: x,
+                        y: y
+                    });
+                }
+            }
+
+            // Compara píxeles antiguos y nuevos para detectar movimiento
+            if(contador > 0){
+                for(let i = 0; i < pixelesnuevos.length; i++){
+                    let rojonuevo = pixelesnuevos[i].data[0];
+                    let rojoviejo = pixelesviejos[i].data[0];
+                    let diferencia = Math.abs(rojonuevo - rojoviejo);
+
+                    // Si hay una diferencia significativa en el color rojo, dibuja un rectángulo en el segundo lienzo
+                    if(diferencia > 16){
+                        contexto2.strokeRect(
+                            pixelesnuevos[i].x,
+                            pixelesnuevos[i].y,
+                            paso,
+                            paso
+                        );
+                    }
+                }
+            }
+
+            // Realiza la animación del video en el lienzo
+            requestAnimationFrame(videoALienzo);
+            contador++;
+        }
+
+        // Inicia la función para procesar el video cuando el video está reproduciéndose
+        video.addEventListener('play', function(){
+            videoALienzo();
+        });
+    </script>
+</body>
+</html>
